@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { useTodos } from './hooks/useTodos';
 import { TodoList } from './components/TodoList';
-import { TextField, Box, Typography, Paper, CssBaseline } from '@mui/material';
+import { TextField, Box, Typography, Paper, CssBaseline, Button, ButtonGroup } from '@mui/material';
+
+type FilterType = 'all' | 'active' | 'completed';
 
 function App() {
-  const { todos, addTodo, toggleTodo, removeTodo, clearCompleted } = useTodos();
+  const { todos, addTodo, toggleTodo, removeTodo, clearCompleted, updateTodoText } = useTodos();
   const [newTodoText, setNewTodoText] = useState('');
+  const [filter, setFilter] = useState<FilterType>('all');
 
   const handleAddTodo = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && newTodoText.trim() !== '') {
@@ -13,6 +16,12 @@ function App() {
       setNewTodoText('');
     }
   };
+
+  const filteredTodos = todos.filter(todo => {
+    if (filter === 'active') return !todo.completed;
+    if (filter === 'completed') return todo.completed;
+    return true;
+  });
 
   const activeTodosCount = todos.filter(todo => !todo.completed).length;
 
@@ -61,7 +70,12 @@ function App() {
             />
           </Box>
           
-          <TodoList todos={todos} onToggle={toggleTodo} onRemove={removeTodo} />
+          <TodoList 
+            todos={filteredTodos} 
+            onToggle={toggleTodo} 
+            onRemove={removeTodo}
+            onUpdate={updateTodoText}
+          />
           
           <Box sx={{ 
             display: 'flex',
@@ -74,18 +88,63 @@ function App() {
             <Typography variant="body2">
               {activeTodosCount} items left
             </Typography>
-            <Box sx={{ display: 'flex', gap: 2 }}>
-              <Typography variant="body2" sx={{ cursor: 'pointer' }}>All</Typography>
-              <Typography variant="body2" sx={{ cursor: 'pointer' }}>Active</Typography>
-              <Typography variant="body2" sx={{ cursor: 'pointer' }}>Completed</Typography>
-            </Box>
-            <Typography 
-              variant="body2" 
+            <ButtonGroup
+              variant="text" 
+              size="small"
+              sx={{
+                '& .MuiButton-root': {
+                  border: 'none',
+                  borderRadius: '14px',
+
+                  '&:not(:last-child)': {
+                    marginRight: '8px'
+                  }
+                }
+              }}
+            >
+              <Button 
+                onClick={() => setFilter('all')}
+                sx={{
+                  backgroundColor: filter === 'all' ? 'rgba(0, 0, 0, 0.08)' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                  }
+                }}
+              >
+                All
+              </Button>
+              <Button 
+                onClick={() => setFilter('active')}
+                sx={{
+                  backgroundColor: filter === 'active' ? 'rgba(0, 0, 0, 0.08)' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                  }
+                }}
+              >
+                Active
+              </Button>
+              <Button 
+                onClick={() => setFilter('completed')}
+                sx={{
+                  backgroundColor: filter === 'completed' ? 'rgba(0, 0, 0, 0.08)' : 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                  }
+                }}
+              >
+                Completed
+              </Button>
+            </ButtonGroup>
+            
+            <Button 
               onClick={clearCompleted}
-              sx={{ cursor: 'pointer' }}
+              variant="text"
+              size="small"
+              disabled={!todos.some(todo => todo.completed)}
             >
               Clear completed
-            </Typography>
+            </Button>
           </Box>
         </Paper>
       </Box>

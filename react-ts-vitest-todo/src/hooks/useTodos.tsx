@@ -26,5 +26,18 @@ export function useTodos() {
     setTodos(todos.filter(todo => !todo.completed));
   };
 
-  return { todos, addTodo, toggleTodo, removeTodo, clearCompleted };
+  const updateTodoText = (id: number, newText: string) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, text: newText } : todo
+    ));
+  };
+
+  return { 
+    todos, 
+    addTodo, 
+    toggleTodo, 
+    removeTodo, 
+    clearCompleted,
+    updateTodoText
+  };
 }
