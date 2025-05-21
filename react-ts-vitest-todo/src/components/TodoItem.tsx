@@ -1,6 +1,7 @@
 import type { Todo } from '../types/Todo';
 import { useState } from 'react';
-import { Button, Checkbox, TextField } from '@mui/material';
+import { Checkbox, TextField, Box, IconButton } from '@mui/material';
+import { Edit, Delete, Check, Close } from '@mui/icons-material';
 
 interface TodoItemProps {
   todo: Todo;
@@ -12,49 +13,70 @@ export function TodoItem({ todo, onToggle, onRemove }: TodoItemProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
 
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
-
-  const handleSave = () => {
-    setIsEditing(false);
-  };
-
+  const handleEdit = () => setIsEditing(true);
+  const handleSave = () => setIsEditing(false);
   const handleCancel = () => {
     setIsEditing(false);
     setEditedText(todo.text);
   };
 
   return (
-    <div>
-      {isEditing ? (
-        <TextField
-          type="text"
-          value={editedText}
-          onChange={(e) => setEditedText(e.target.value)}
-        />
-      ) : (
-        <span
-          style={{
-            textDecoration: todo.completed ? 'line-through' : 'none',
-          }}
-        >
-          {todo.text}
-        </span>
-      )}
+    <Box sx={{ 
+      display: 'flex',
+      alignItems: 'center',
+      width: '100%',
+      padding: '8px 16px',
+      borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+      '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.04)' }
+    }}>
       <Checkbox
         checked={todo.completed}
         onChange={() => onToggle(todo.id)}
+        color="primary"
+        sx={{ marginRight: 2 }}
       />
-      <Button onClick={() => onRemove(todo.id)}>Remove</Button>
+      
       {isEditing ? (
-        <>
-          <Button onClick={handleSave}>Save</Button>
-          <Button onClick={handleCancel}>Cancel</Button>
-        </>
+        <TextField
+          fullWidth
+          value={editedText}
+          onChange={(e) => setEditedText(e.target.value)}
+          autoFocus
+          variant="standard"
+          sx={{ marginRight: 2 }}
+        />
       ) : (
-        <Button onClick={handleEdit}>Edit</Button>
+        <Box sx={{ 
+          flexGrow: 1,
+          textDecoration: todo.completed ? 'line-through' : 'none',
+          color: todo.completed ? 'text.disabled' : 'text.primary',
+          fontSize: '1.1rem'
+        }}>
+          {todo.text}
+        </Box>
       )}
-    </div>
+      
+      <Box sx={{ display: 'flex', gap: 1 }}>
+        {isEditing ? (
+          <>
+            <IconButton onClick={handleSave} size="small" color="primary">
+              <Check fontSize="small" />
+            </IconButton>
+            <IconButton onClick={handleCancel} size="small" color="error">
+              <Close fontSize="small" />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <IconButton onClick={handleEdit} size="small">
+              <Edit fontSize="small" />
+            </IconButton>
+            <IconButton onClick={() => onRemove(todo.id)} size="small" color="error">
+              <Delete fontSize="small" />
+            </IconButton>
+          </>
+        )}
+      </Box>
+    </Box>
   );
 }
