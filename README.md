@@ -1,5 +1,9 @@
 # React TypeScript Vitest Todo
 
+## Ссылка на выпущенную страницу в github pages:
+
+https://artashesfrangyan.github.io/react-ts-vitest-todo/
+
 ## Описание проекта
 
 Это приложение для управления списком задач (Todo List), разработанное с использованием современного стека технологий:
