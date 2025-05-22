@@ -81,3 +81,5 @@ npm run test:coverage
 MIT
 
 ## Фото
+
+<img width="1512" alt="image" src="https://github.com/user-attachments/assets/ee15f026-d4cd-4474-9407-d2119cce6238" />
