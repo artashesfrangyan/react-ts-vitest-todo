@@ -20,7 +20,6 @@ https://artashesfrangyan.github.io/react-ts-vitest-todo/
 
 ```
 src/
-|-- assets/          # Статические ресурсы
 |-- components/      # React компоненты
 |   |-- TodoItem.tsx # Компонент отдельной задачи
 |   `-- TodoList.tsx # Компонент списка задач
