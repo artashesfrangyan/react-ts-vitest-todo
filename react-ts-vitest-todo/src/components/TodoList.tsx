@@ -6,7 +6,7 @@ interface TodoListProps {
   todos: Todo[];
   onToggle: (id: number) => void;
   onRemove: (id: number) => void;
-  onUpdate: (id: number, newText: string) => void; // Добавляем новый пропс
+  onUpdate: (id: number, newText: string) => void;
 }
 
 export function TodoList({ todos, onToggle, onRemove, onUpdate }: TodoListProps) {
@@ -18,7 +18,7 @@ export function TodoList({ todos, onToggle, onRemove, onUpdate }: TodoListProps)
           todo={todo}
           onToggle={onToggle}
           onRemove={onRemove}
-          onUpdate={onUpdate} // Передаём функцию обновления
+          onUpdate={onUpdate}
         />
       ))}
     </List>
